@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TodoApi.Data; // שימי לב: אם יש לך שגיאה אדומה כאן, תשני ל-Project3.Data או לשם ה-Namespace שלך
-
+using Project3.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // --- תיקון 1: הגדרת הפורט במיוחד ל-Clever Cloud ---
