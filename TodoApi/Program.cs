@@ -1,33 +1,29 @@
 using Microsoft.EntityFrameworkCore;
-using TodoApi; 
+using TodoApi.Data; // שימי לב: אם יש לך שגיאה אדומה כאן, תשני ל-Project3.Data או לשם ה-Namespace שלך
 
 var builder = WebApplication.CreateBuilder(args);
 
-// הגדרת חיבור למסד הנתונים
-builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"), 
-    Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.36-mysql")));
+// --- תיקון 1: הגדרת הפורט במיוחד ל-Clever Cloud ---
+builder.WebHost.UseUrls("http://0.0.0.0:8080");
 
-// הוספת אישור כניסה ל-React (CORS)
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll",
-        policy =>
-        {
-            policy.AllowAnyOrigin()
-                  .AllowAnyMethod()
-                  .AllowAnyHeader();
-        });
-});
-
+// הוספת שירותים (Services)
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// הגדרת החיבור ל-MySQL
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ToDoDbContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 var app = builder.Build();
 
-// הפעלת האישור
-app.UseCors("AllowAll");
+// --- תיקון 2: הפעלת Swagger תמיד (מחקנו את ה-if) ---
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseAuthorization();
 
 app.MapControllers();
 
-// הפעלת השרת
 app.Run();
