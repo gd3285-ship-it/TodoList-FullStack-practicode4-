@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5245';
+// קבע את ה-API URL בהתאם לסביבה
+const API_URL = window.location.hostname === 'localhost' 
+  ? 'http://localhost:5245'
+  : 'https://todolist-fullstack-practicode4.onrender.com';
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
