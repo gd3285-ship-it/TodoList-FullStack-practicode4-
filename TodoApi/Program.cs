@@ -73,14 +73,14 @@ app.UseAuthorization();
 
 // --- 3. Routes ---
 
-app.MapGet("/items", async (ToDoDbContext db) => await db.Items.ToListAsync()).RequireAuthorization();
+app.MapGet("/items", async (ToDoDbContext db) => await db.Items.ToListAsync());
 
 app.MapPost("/items", async (ToDoDbContext db, Item newItem) =>
 {
     db.Items.Add(newItem);
     await db.SaveChangesAsync();
     return Results.Created($"/items/{newItem.Id}", newItem);
-}).RequireAuthorization();
+});
 
 app.MapPut("/items/{id}", async (int id, Item inputItem, ToDoDbContext db) =>
 {
@@ -90,7 +90,7 @@ app.MapPut("/items/{id}", async (int id, Item inputItem, ToDoDbContext db) =>
     item.IsComplete = inputItem.IsComplete;
     await db.SaveChangesAsync();
     return Results.NoContent();
-}).RequireAuthorization();
+});
 app.MapDelete("/items/{id}", async (int id, ToDoDbContext db) =>
 {
     var item = await db.Items.FindAsync(id);
@@ -98,7 +98,7 @@ app.MapDelete("/items/{id}", async (int id, ToDoDbContext db) =>
     db.Items.Remove(item);
     await db.SaveChangesAsync();
     return Results.NoContent();
-}).RequireAuthorization();
+});
 
 // Auth
 app.MapPost("/login", async (User loginUser, ToDoDbContext db) =>
@@ -128,3 +128,4 @@ app.MapPost("/register", async (User newUser, ToDoDbContext db) =>
 app.MapGet("/", () => "API Running");
 
 app.Run();
+
