@@ -1,123 +1,131 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import service from "../service";
+import React, { useState, useEffect } from "react";
+import itemService from "../service";
 import "../styles/TodoList.css";
 
-export default function TodoList() {
-  const [newTodo, setNewTodo] = useState("");
+function TodoList() {
   const [todos, setTodos] = useState([]);
+  const [input, setInput] = useState("");
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
-  const getTodos = async () => {
+  // טען משימות בעומס העמוד
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
+  // קבל את המשימות מה-API
+  const fetchTodos = async () => {
     try {
       setLoading(true);
-      const tasks = await service.getTasks();
-      setTodos(tasks || []);
-    } catch (e) {
-      console.error(e);
+      const data = await itemService.getTasks();
+      setTodos(data || []);
+    } catch (error) {
+      console.error("שגיאה בטעינת משימות:", error);
+      alert("שגיאה בטעינת משימות. בדוק את החיבור ל-API.");
     } finally {
       setLoading(false);
     }
   };
 
-  const createTodo = async (e) => {
+  // הוסף משימה חדשה
+  const handleAddTodo = async (e) => {
     e.preventDefault();
-    if (!newTodo.trim()) return;
+    
+    if (!input.trim()) {
+      alert("אנא הזן משימה");
+      return;
+    }
+
     try {
-      await service.addTask(newTodo);
-      setNewTodo("");
-      await getTodos();
-    } catch (e) {
-      console.error(e);
+      const newTodo = await itemService.addTask(input.trim());
+      setTodos([...todos, newTodo]);
+      setInput("");
+    } catch (error) {
+      console.error("שגיאה בהוספת משימה:", error);
+      alert("שגיאה בהוספת משימה. בדוק את החיבור ל-API.");
     }
   };
 
-  const updateTodo = async (id, name, isComplete) => {
+  // עדכן משימה (סימון כהושלמה)
+  const handleToggleTodo = async (id, isComplete) => {
     try {
-      await service.setCompleted(id, isComplete);
-      await getTodos();
-    } catch (e) {
-      console.error(e);
+      const updatedTodo = await itemService.setCompleted(id, !isComplete);
+      setTodos(todos.map(todo => todo.id === id ? updatedTodo : todo));
+    } catch (error) {
+      console.error("שגיאה בעדכון משימה:", error);
+      alert("שגיאה בעדכון משימה.");
     }
   };
 
-  const deleteTodo = async (id) => {
+  // מחק משימה
+  const handleDeleteTodo = async (id) => {
     try {
-      await service.deleteTask(id);
-      await getTodos();
-    } catch (e) {
-      console.error(e);
+      await itemService.deleteTask(id);
+      setTodos(todos.filter(todo => todo.id !== id));
+    } catch (error) {
+      console.error("שגיאה במחיקת משימה:", error);
+      alert("שגיאה במחיקת משימה.");
     }
   };
-
-  const handleLogout = () => {
-    service.logout();
-    navigate("/login");
-  };
-
-  useEffect(() => {
-    getTodos();
-  }, []);
 
   return (
     <div className="app-background">
       <div className="glass-container">
-        <div className="header">
-          <h1 className="title">נ“ ׳¨׳©׳™׳׳× ׳”׳׳©׳™׳׳•׳× ׳©׳׳™</h1>
-          <button onClick={handleLogout} className="logout-btn">
-            ׳”׳×׳ ׳×׳§׳•׳×
-          </button>
-        </div>
+        <h1> המשימות שלי</h1>
 
-        <form onSubmit={createTodo} className="input-group">
+        {/* טופס הוספה */}
+        <form onSubmit={handleAddTodo} className="input-section">
           <input
-            className="custom-input"
-            placeholder="׳”׳•׳¡׳£ ׳׳©׳™׳׳” ׳—׳“׳©׳”..."
-            value={newTodo}
-            onChange={(e) => setNewTodo(e.target.value)}
+            type="text"
+            placeholder="הוסף משימה חדשה..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            disabled={loading}
           />
-          <button type="submit" className="add-btn" title="׳”׳•׳¡׳£ ׳׳©׳™׳׳”">
-            ג•
+          <button type="submit" className="add-button" disabled={loading}>
+            
           </button>
         </form>
 
-        <div className="todo-list-container">
-          {loading ? (
-            <div className="loading">...׳˜׳•׳¢׳</div>
-          ) : todos.length === 0 ? (
-            <div className="empty-state">נ‰ ׳׳™׳ ׳׳©׳™׳׳•׳×! ׳׳×׳” ׳—׳•׳₪׳©׳™!</div>
-          ) : (
-            <ul className="todo-list">
-              {todos.map((todo) => (
-                <li
-                  key={todo.id}
-                  className={`todo-item ${todo.isComplete ? "done" : ""}`}
-                >
-                  <div className="todo-content">
+        {/* מצב טעינה */}
+        {loading && <div className="loading">טוען משימות</div>}
+
+        {/* רשימת משימות */}
+        {!loading && (
+          <>
+            {todos.length === 0 ? (
+              <div className="empty-message">
+                 אין משימות כרגע
+                <strong>בואו נוסיף אחת!</strong>
+              </div>
+            ) : (
+              <div className="todo-list">
+                {todos.map((todo) => (
+                  <div
+                    key={todo.id}
+                    className={`todo-item ${todo.isComplete ? "completed" : ""}`}
+                  >
                     <input
                       type="checkbox"
+                      className="checkbox"
                       checked={todo.isComplete}
-                      onChange={(e) =>
-                        updateTodo(todo.id, todo.name, e.target.checked)
-                      }
-                      className="todo-checkbox"
+                      onChange={() => handleToggleTodo(todo.id, todo.isComplete)}
                     />
                     <span className="todo-text">{todo.name}</span>
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDeleteTodo(todo.id)}
+                    >
+                      
+                    </button>
                   </div>
-                  <button
-                    onClick={() => deleteTodo(todo.id)}
-                    className="delete-btn"
-                    title="׳׳—׳§ ׳׳©׳™׳׳”"
-                  >
-                    נ—‘ן¸
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );
 }
+
+export default TodoList;
