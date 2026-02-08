@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Rubik', sans-serif;
+  overflow: hidden; /* מונע גלילה מיותרת */
+}
+
+/* רקע אנימציה זז */
+.app-background {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* אפקט הזכוכית */
+.glass-container {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  width: 90%;
+  max-width: 500px;
+  padding: 2rem;
+  direction: rtl;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  color: white;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-weight: 700;
+}
+
+/* תיבת הוספה */
+.input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.custom-input {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.9);
+  font-family: 'Rubik', sans-serif;
+  font-size: 1rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+
+.custom-input:focus {
+  transform: scale(1.02);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.add-btn {
+  background: #ffffff;
+  color: #e73c7e;
+  border: none;
+  width: 50px;
+  border-radius: 12px;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.add-btn:hover {
+  background: #e73c7e;
+  color: white;
+  transform: rotate(90deg);
+}
+
+/* רשימת המשימות */
+.todo-list-container {
+  overflow-y: auto;
+  padding-right: 5px; /* מקום לפס גלילה */
+}
+
+/* עיצוב פס גלילה */
+.todo-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+.todo-list-container::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.5);
+  border-radius: 10px;
+}
+
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.todo-item {
+  background: rgba(255, 255, 255, 0.85);
+  margin-bottom: 10px;
+  padding: 12px 15px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.todo-item:hover {
+  transform: translateX(-5px);
+  background: white;
+}
+
+.todo-item.done {
+  opacity: 0.6;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.todo-item.done .todo-text {
+  text-decoration: line-through;
+  color: #555;
+}
+
+.todo-text {
+  flex: 1;
+  margin-right: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* צ'קבוקס מעוצב */
+.checkbox-container {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  font-size: 22px;
+  user-select: none;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  display: block;
+  height: 22px;
+  width: 22px;
+  background-color: #eee;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #23d5ab;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 8px;
+  top: 4px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+/* כפתור מחיקה */
+.delete-btn {
+  background: none;
+  border: none;
+  color: #ff6b6b;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: 0.2s;
+  padding: 5px;
+}
+
+.delete-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.delete-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  color: #d63031;
+}
+
+.empty-state {
+  text-align: center;
+  color: white;
+  font-size: 1.2rem;
+  margin-top: 20px;
+}

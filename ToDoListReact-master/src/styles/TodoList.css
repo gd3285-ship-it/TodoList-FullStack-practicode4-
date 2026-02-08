@@ -1,0 +1,305 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Rubik', sans-serif;
+  overflow: hidden;
+}
+
+/* Background */
+.app-background {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  direction: rtl;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Glass Container */
+.glass-container {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  width: 90%;
+  max-width: 500px;
+  padding: 2rem;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.6s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Header with Logout */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  color: white;
+  text-align: center;
+  flex: 1;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+.logout-btn {
+  background: rgba(255, 255, 255, 0.3);
+  border: 2px solid white;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Rubik', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Input Group */
+.input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.custom-input {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.9);
+  font-family: 'Rubik', sans-serif;
+  font-size: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: 0.3s;
+  color: #333;
+}
+
+.custom-input:focus {
+  transform: scale(1.02);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+.custom-input::placeholder {
+  color: #999;
+}
+
+/* Add Button */
+.add-btn {
+  background: #ffffff;
+  color: #e73c7e;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.add-btn:hover {
+  background: #e73c7e;
+  color: white;
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.add-btn:active {
+  transform: rotate(90deg) scale(0.95);
+}
+
+/* Todo List Container */
+.todo-list-container {
+  overflow-y: auto;
+  padding-right: 5px;
+  flex: 1;
+}
+
+.todo-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.todo-list-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+}
+
+.todo-list-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* Todo List */
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.todo-item {
+  background: rgba(255, 255, 255, 0.85);
+  margin-bottom: 10px;
+  padding: 12px 15px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  animation: slideIn 0.3s ease-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.todo-item:hover {
+  transform: translateX(-5px);
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.todo-item.done {
+  opacity: 0.6;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.todo-item.done .todo-text {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.todo-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.todo-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #23d5ab;
+}
+
+.todo-text {
+  flex: 1;
+  font-weight: 500;
+  color: #333;
+  word-break: break-word;
+}
+
+/* Delete Button */
+.delete-btn {
+  background: none;
+  border: none;
+  color: #ff6b6b;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: 0.2s;
+  padding: 5px;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.delete-btn:hover {
+  opacity: 1;
+  transform: scale(1.1) rotate(10deg);
+  color: #d63031;
+}
+
+.delete-btn:active {
+  transform: scale(0.95);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  color: white;
+  font-size: 1.2rem;
+  margin-top: 40px;
+  font-weight: 500;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  color: white;
+  padding: 20px;
+  font-size: 1.1rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .glass-container {
+    max-height: 90vh;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .logout-btn {
+    width: 100%;
+  }
+
+  .add-btn {
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+  }
+}
