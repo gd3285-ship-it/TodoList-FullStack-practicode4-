@@ -1,9 +1,61 @@
-# React
-node_modules/
-build/
-.env
-
-# .NET
+# .NET build outputs
 bin/
 obj/
+*.dll
+*.exe
+*.pdb
+*.so
+*.dylib
+
+# Entity Framework Core - Database files
+*.db
+*.db-shm
+*.db-wal
+todolist.db
+
+# Visual Studio
+.vs/
 .vscode/
+*.user
+*.sln.docstates
+.idea/
+
+# User-specific files
+.DS_Store
+Thumbs.db
+
+# IDE specific
+*.swp
+*.swo
+*~
+
+# Environment files (local only)
+.env
+.env.local
+.env.*.local
+appsettings.Development.json
+
+# Node/React
+node_modules/
+npm-debug.log
+yarn-error.log
+build/
+dist/
+.next/
+
+# Package lock files (keep package.json only)
+package-lock.json
+yarn.lock
+
+# OS specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+
+# Build artifacts
+.build/
+.publish/
