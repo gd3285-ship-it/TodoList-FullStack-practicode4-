@@ -68,8 +68,8 @@ using (var scope = app.Services.CreateScope())
 app.UseCors("AllowAll");
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseAuthentication();
-app.UseAuthorization();
+// app.UseAuthentication();
+// app.UseAuthorization();
 
 // --- 3. Routes ---
 
